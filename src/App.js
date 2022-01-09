@@ -1,25 +1,65 @@
-import logo from './logo.svg';
-import './App.css';
+import styled from '@emotion/styled'
+import IPFSTemp from './IpfsTemp'
+import { useEffect } from 'react'
+import { BrowserRouter } from "react-router-dom"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+import { Router } from "react-router";
+import { Route, Routes } from 'react-router'
+
+const Container = styled.div`
+  min-width: 100vw;
+  max-width: 1100px;
+
+  min-height: 100vh;
+  margin: 0;
+
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(300px, 1fr)
   );
+  grid-gap: 0.1em;
+  grid-auto-flow: dense;
+
+  color: black;
+`
+
+
+const App = () => {
+
+return <BrowserRouter>
+<Layout>
+<IPFSTemp/>
+
+  <p >2</p>
+
+  
+  <p >3</p>
+
+  <p >3</p>
+  <p >3</p>
+
+
+
+  <p >2</p>
+  <p >3</p>
+  <p >3</p>
+  <p >3</p>
+
+  <p >3</p>
+  <p >3</p>
+
+</Layout>
+</BrowserRouter>
 }
+
+// Grabs each children and place into a certain box
+let Layout = ({ children }) => <Container>
+  {children.map( children => <article class='article'>
+    {children}
+  </article>)}
+    
+</Container>
+
 
 export default App;
