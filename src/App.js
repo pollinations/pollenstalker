@@ -13,7 +13,7 @@ const getMinuteDifference = (start, end)=> parseInt(Math.abs(end.getTime() - sta
 
 const App = () => {
 
-const isDark = useState(false)
+const isDark = useState(true)
 const [ isDarkMode, setDarkMode ] = isDark
 
 const initialDate = moment()
