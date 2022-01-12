@@ -6,11 +6,14 @@ const [ count, setCount ] = useState(0)
 // animate
 // a bit jittery maybe using a lib? idk
 useEffect(()=>{
-    if (!isHover) return null
-    let interval = setInterval(() => {
-    setCount(state => (state + 1) % imgs.length)
-    }, 100);
-    return () => clearInterval(interval)
+    if (!isHover) {
+        setCount(0)
+    } else {
+        let interval = setInterval(() => {
+        setCount(state => (state + 1) % imgs.length)
+        }, 100);
+        return () => clearInterval(interval)
+    }
 },[isHover])
 
 return <div style={{width: '100%', minHeight: '50%',backgroundColor:'black',display: 'flex', alignItems: 'center'}}>
