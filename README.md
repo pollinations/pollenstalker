@@ -1,1 +1,1 @@
-[pollinations.ai](https://www.pollinations.ai).
+[pollinations.ai](https://www.pollinations.ai)
