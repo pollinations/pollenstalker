@@ -4,6 +4,7 @@ const ImgAnimated = ({imgs, isHover}) => {
 const [ count, setCount ] = useState(0)
 
 // animate
+// a bit jittery maybe using a lib? idk
 useEffect(()=>{
     if (!isHover) return null
     let interval = setInterval(() => {
