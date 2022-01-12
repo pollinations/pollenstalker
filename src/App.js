@@ -13,7 +13,8 @@ const getMinuteDifference = (start, end)=> parseInt(Math.abs(end.getTime() - sta
 
 const App = () => {
 
-const [ isDarkMode, setDarkMode ] = useState(false)
+const isDark = useState(false)
+const [ isDarkMode, setDarkMode ] = isDark
 
 const initialDate = moment()
 
@@ -21,7 +22,7 @@ const initialDate = moment()
 return <BrowserRouter>
   {/* <Nav/> */}
   <Container isDark={isDarkMode}>
-      <Home elapsed={initialDate} setDarkMode={setDarkMode}/>
+      <Home elapsed={initialDate} isDark={isDark} />
   </Container>
 </BrowserRouter>
 }
