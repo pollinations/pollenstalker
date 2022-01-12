@@ -13,7 +13,7 @@ import { AUTH, noop, toPromise } from "./utils.js";
 
 const debug = Debug("ipfsConnector")
 
-const IPFS_HOST = "https://api.pollinations.ai";
+const IPFS_HOST = "http://api.pollinations.ai";
 
 let _client = null;
 
@@ -22,7 +22,7 @@ const base64Decode = s => Buffer.from(s, "base64").toString("utf8");
 const Authorization = base64Decode(AUTH);
 
 // create a new IPFS session
-export function getClient() {
+export async function getClient() {
     if (!_client) {
         _client = getIPFSDaemonURL().then(url => create({
             port: 5005,

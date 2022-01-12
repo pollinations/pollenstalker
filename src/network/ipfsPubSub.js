@@ -191,6 +191,7 @@ function subscribeCallback(topic, callback) {
     let abort = new AbortController();
 
     (async () => {
+
         const onError = async (...errorArgs) => {
             debug("onError", ...errorArgs, "aborting")
 
@@ -215,11 +216,13 @@ function subscribeCallback(topic, callback) {
 
         const doSub = async () => {
             const client = await getClient()
+            
             try {
-                abort.abort();
-                abort = new AbortController()
-                debug("Executing subscribe", topic);
-                await client.pubsub.subscribe(topic, (...args) => handler(...args), { onError, signal: abort.signal, timeout: "4h" });
+                // abort.abort();
+                // abort = new AbortController()
+                console.log("Executing subscribe", topic);
+                let res = await client.pubsub.subscribe(topic, (...args) => handler(...args), { onError, signal: abort.signal, timeout: "4h" });
+                console.log(res)
             } catch (e) {
                 debug("subscribe error", e, e.name);
                 if (e.name === "DOMException") {

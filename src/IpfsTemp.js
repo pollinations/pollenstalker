@@ -1,68 +1,83 @@
-import { useState, useEffect } from 'react';
-import useIpfsFactory from './hooks/useIPFSFactory'
-import useIpfs from './hooks/useIPFS'
-import useIPFSClient from './hooks/useIPFSClient';
+import { useState, useEffect, Suspense } from 'react';
+import useSubscribe from './hooks/useSubscribe'
+import useIPFS from './hooks/useIPFS';
+import { getNotebookMetadata } from "./utils/notebookMetadata"
+import { mediaToDisplay } from "./utils/media2display"
+import moment from 'moment'
 
-function IPFSTemp() {
-  const { ipfs, ipfsInitError } = useIPFSClient()
+// Accepts the array and key
+function groupBy(xs, f) {
+  return xs.reduce((r, v, i, a, k = f(v)) => ((r[k] || (r[k] = [])).push(v), r), {});
+}
 
-  const { id, getCIDContent } = useIpfs(ipfs, 'id')
-  const [version, setVersion] = useState(null)
+function IPFSTemp({ elapsed }) {
+    const cid = useSubscribe("processing_pollen")
+    const ipfs = useIPFS(cid)
 
-  useEffect(() => {
-    if (!ipfs) return;
-    const getVersion = async () => {
+    const [ pollenList, setList ] = useState([])
+    const [ lastDate, setLastDate ] = useState()
 
-        
-    const nodeId = await ipfs.version();
-    setVersion(nodeId);
+    useEffect(()=>{
 
+
+      // metadata
+      const { primaryInput, firstContent } = getNotebookMetadata(ipfs)
+      
+
+      // if (pollenList.find( pollen => pollen.prompt === primaryInput) || (primaryInput === undefined)) return null
+      if (!firstContent.url) return null
+
+      setList(state => ([...state, { 
+        prompt: primaryInput,
+        result: firstContent,
+        cid: ipfs.cid,
+      }]))
+
+      setLastDate( elapsed.diff(moment(), 'seconds') * -1)
+
+    },[ipfs])
+
+  
+  return  <>
+    <div style={{padding: '1em'}}>
+      <InfoBlock 
+      pollenList={pollenList} 
+      elapsed={elapsed} 
+      lastDate={lastDate}/>
+    </div>
+    {
+      pollenList
+      .filter( props => props.result !== undefined)
+      .reverse()
+      .map( props =>     
+        <Article key={props.prompt} {...props} /> 
+      ) 
     }
-    getVersion();
-  }, [ipfs])
-
-  async function handleClick(){
-    console.log(getCIDContent('QmWDdsWS6s3VqbSFSdvdnpAabitTxQM4Dv3b89w81viFMJ'))
-  }
-  return <>
-      <button  onClick={handleClick} children='getCID'/>
-
-        {ipfsInitError && (
-          <div >
-            Error: {ipfsInitError.message || ipfsInitError}
-          </div>
-        )}
-        {(id || version) &&
-            <section >
-            <h1 data-test='title'>Connected to IPFS</h1>
-            <div >
-              {id && <IpfsId obj={id} keys={['id', 'agentVersion']} />}
-              {version && <IpfsId obj={version} keys={['version']} />}
-            </div>
-          </section>
-        }
-</>
+    {
+      console.log(Object.entries(groupBy(pollenList, pollen => pollen.prompt)))
+    }
+  </>
 }
 
-const Title = ({ children, ipfs }) => {
-
-  return <>
-    <h2 >{children}</h2>
-    </>
+const InfoBlock = ({ pollenList, lastDate, elapsed }) => {
+  return <Suspense fallback={<p children='loading'/>}>
+    <h2 children='follow the pollen'/>
+    <p children={`IMG count: ${pollenList.length}`}/>
+    <p children={`${(pollenList.length / lastDate).toFixed(2)} imgs / second`}/>
+    <p children={`${moment().diff(elapsed, 'minutes') } minutes elapsed`}/>
+    <p style={{fontSize: '0.8em', fontStyle: 'italic'}} children='obs: it will freeze the frontend at some point (for me around 1700 imgs).'/>
+  </Suspense>
 }
 
-const IpfsId = ({keys, obj, ipfs}) => {
-  if (!obj || !keys || keys.length === 0) return null
-  return (
-    <>
-      {keys?.map((key) => (
-        <div key={key}>
-          <Title ipfs={ipfs}>{key}</Title>
-          <div data-test={key}>{obj[key]}</div>
-        </div>
-      ))}
-    </>
-  )
+const Article = ({ prompt, result }) => {
+  return <article class='article'>
+    <img src={result?.url}/>
+    <div>
+      {/* <h5 children='Title'/> */}
+      <p children={prompt}/>
+    </div>
+  </article>
 }
+
 
 export default IPFSTemp;
