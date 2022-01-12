@@ -13,7 +13,7 @@ import { AUTH, noop, toPromise } from "./utils.js";
 
 const debug = Debug("ipfsConnector")
 
-const IPFS_HOST = "http://api.pollinations.ai";
+const IPFS_HOST = "https://api.pollinations.ai";
 
 let _client = null;
 

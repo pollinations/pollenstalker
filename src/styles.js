@@ -69,22 +69,17 @@ export const Main = styled.body`
   
   
   .article {
-    max-height: 100vh;
+    height: 500px;
     padding: 0em;
     background: #fff;
   
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: space-between;
 
-    div {
-        padding: 1em;
-    }
-    img {
-        width: 100%;
-    }
+    
     p {
-        padding: 1em;
+        padding: 0 1em;
     }
 
   }
