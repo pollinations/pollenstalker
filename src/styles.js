@@ -20,7 +20,29 @@ export const Container = styled.div`
     grid-gap: 1em;
   grid-auto-flow: dense;
 
-  color: black;
+
+  // theme stuff
+
+  background-color: ${props => props.isDark ? 'black' : 'whitesmoke'};
+  h2,
+  a,
+  p {
+    color: ${props => props.isDark ? 'white' : 'black'};
+  }
+  .article {
+    height: 500px;
+    padding: 0em;
+    background: ${props => props.isDark ? '#333' : 'white'};
+  
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    p {
+        padding: 0 1em;
+    }
+
+  }
 `
 export const NavStyle = styled.div`
 width: 100%;
@@ -50,17 +72,11 @@ background-color: transparent;
 
 export const Main = styled.body`
 
-
   h2{
-      color: rgba(127,127,127);
       font-weight: 400; 
   }
   
-  h2,
-  a,
-  p {
-    color: black;
-  }
+  
   
   a {
     font-style: italic;
@@ -68,19 +84,5 @@ export const Main = styled.body`
   }
   
   
-  .article {
-    height: 500px;
-    padding: 0em;
-    background: #fff;
   
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    
-    p {
-        padding: 0 1em;
-    }
-
-  }
 `

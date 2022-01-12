@@ -12,7 +12,7 @@ import PollenCard from '../components/molecules/Card'
 import InfoCard from '../components/molecules/InfoCard'
 
 
-function Home({ elapsed }) {
+function Home({ elapsed, setDarkMode }) {
     const cid = useSubscribe("processing_pollen")
     const ipfs = useIPFS(cid)
 
@@ -43,6 +43,7 @@ function Home({ elapsed }) {
   return  <>
     <div style={{ padding: '1em' }}>
       <InfoCard 
+      setDarkMode={setDarkMode}
       pollenList={pollenList} 
       elapsed={elapsed} 
       lastDate={lastDate}/>
